@@ -1,0 +1,88 @@
+V + L unimodal features (Huggingface visionencdec)
+Hugging Face VisionEncDec align Vision enc and Lang dec (that are trained in isolation) like Lego blocks using cross attention for multimodal tasks 
+But it is limited as it totally relies on aligning V and L features learned in isolation. 
+Few limitations are “Poor image-text alignment”, “huge data appetite” & “longer training time”.  
+
+Egs: VIT,BEIT,DEIT + GPT,RobertaforCausalLM,BertforcausalLM
+
+
+V + L pretraining and finetuning
+Unified VLP models are typically pretrained on a large amount of image-text pairs with “creative“ self-supervised objectives & loss functions
+
+Tasks:
+VisualQA - Generative as well as fixed version
+CBIR - Finegrained ecommerce search, real estate, food etc
+
+
+In multimodal models, the layer where cross-modal interactions are introduced is called the fusion layer. 
+The two extreme versions are early fusion (where all layers in the transformer are cross-modal) and late fusion (where all layers are unimodal 
+and no cross-modal information is exchanged in the transformer encoder). Specifying a fusion layer in between leads to mid fusion.
+
+This technique builds on a common paradigm in multimodal learning, which is to restrict cross-modal flow to later layers of the network, 
+allowing early layers to specialize in learning and extracting unimodal patterns.
+
+late fusion often performs better than early fusion. It can be treated similar to conecpt of ensemble models
+
+VisionEncoderDecoder and CLIP uses *late fusion*. 
+
+VLP uses *mid and/or early fusion
+
+VLP:
+
+Single stream
+- Features fused early and passed to another transformer block
+- More efficient as it shares parameters
+
+
+Dual stream
+- Features are passed independently into transformer blocks 
+- Not efficient
+
+Pretraining obj:
+
+MLM
+MVM
+PrefixLM - Unified version of LM and MLM. 
+
+VisionLanguage Matching - [CLS] representation and predict
+VisionLanguageContrastive - Take two features and minimise distance
+
+BLIP (BootStrapping Language Image Pretraining for unified Language-Image understanding
+ - They introduce 2 major contributions - 
+	Data - Caption and filter models 
+	Model - Multi modal mixture of encoder-decoder - 
+	
+	Pretraining objectives - image/text contrastive learning, image-text matching,  image conditioned text generation
+	
+	We propose multimodal mixture of encoder-decoder, 
+	a unified vision-language model which can operate in one of the three functionalities: 
+	(1) Unimodal encoder is trained with an image-text contrastive (ITC) loss to align the vision and language representations. 
+	(2) Image-grounded text encoder uses additional cross-attention layers to model vision-language interactions, and is trained with a image-text matching (ITM) loss to distinguish
+	between positive and negative image-text pairs. 
+	(3) Image-grounded text decoder replaces the bi-directional self-attention layers with
+	causal self-attention layers, and shares the same cross-attention layers and feed forward networks as the encoder. The decoder is trained
+	with a language modeling (LM) loss to generate captions given images.
+
+MLIM - Masked Language and Image Modelling
+ image encoder - shallow CNNs
+ Loss functions - MLM and recons loss
+ They do not use any alignment based loss functions. Instead they use MAM which facilitates the cross modal flows
+ MAM has 3 modes
+	- heavy image/text masking
+	- light image/text masking
+
+  deconv layers for image decoder and reconst
+  
+  
+List of VLP models
+
+-LXMERT,
+-UNITER,
+-ViLBERT, 
+-VL-BERT, 
+-VisualBERT,
+-ViLT
+
+
+Demo
+
